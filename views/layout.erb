@@ -9,6 +9,12 @@
     <h1>Card-o-matic</h1>
   </header>
 
+  <% if @intro %>
+  <p class="intro">
+    Generate printable story cards for your Pivotal Tracker project.
+  </p>
+  <% end %>
+
   <div id="main">
     <% if @error %>
       <div class="error"><%= @error %></div>

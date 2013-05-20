@@ -36,7 +36,13 @@ header h1 {
 }
 
 p { margin: 0.6em 0; }
-p.hint { font-size: 0.85em; padding: 0.2em 0; color: #555;}
+p.hint { font-size: 0.85em; padding: 0.2em 0; line-height: 1.5em; color: #555;}
+p.intro {
+  font-family: Georgia, Times, serif;
+  text-align: center;
+  font-style: italic;
+  margin: 0 0 2em;
+}
 
 form ul {
   padding-left: 0;

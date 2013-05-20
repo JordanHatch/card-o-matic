@@ -1,9 +1,8 @@
-<p>Enter your Pivotal API key:</p>
-
 <form action="/projects" method="post">
-  <p><input type="text" name="api_key" /></p>
+  <p><label for="api_key">Enter your Pivotal Tracker API key:</label></p>
+  <p><input type="text" name="api_key" id="api_key" /></p>
 
-  <p class="hint">You can find your API key at the bottom of the <a href="https://www.pivotaltracker.com/profile">profile page</a>.
+  <p class="hint">You can find your API key at the bottom of the <a href="https://www.pivotaltracker.com/profile">profile page</a>. The key isn't saved and it's only used to build your cards.</p>
 
   <p><button type="submit">Next</button></p>
 </form>

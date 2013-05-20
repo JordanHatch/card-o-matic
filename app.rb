@@ -6,6 +6,8 @@ PivotalTracker::Client.use_ssl = true
 
 class CardOMatic < Sinatra::Base
   get '/' do
+    @intro = true
+
     erb :start
   end
 
