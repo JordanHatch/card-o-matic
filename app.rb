@@ -17,8 +17,7 @@ class CardOMatic < Sinatra::Base
     begin
       @projects = PivotalTracker::Project.all
     rescue RestClient::Unauthorized
-      @error = "We couldn't connect with your API key."
-      halt(400, erb(:start))
+      render_previous_step_with_error(:start, "We couldn't connect with your API key.")
     end
 
     erb :projects
@@ -28,7 +27,7 @@ class CardOMatic < Sinatra::Base
     setup_api_key
     setup_project
 
-    @iterations = @project.iterations.all(offset: @project.current_iteration_number-2).reverse
+    @iterations = fetch_iterations(@project)
 
     erb :iterations
   end
@@ -38,9 +37,8 @@ class CardOMatic < Sinatra::Base
     setup_project
 
     if params[:iteration].nil? || params[:iteration].empty?
-      @error = 'Please choose an iteration.'
-      @iterations = @project.iterations.all(offset: @project.current_iteration_number-2).reverse
-      halt(400, erb(:iterations))
+      @iterations = fetch_iterations(@project)
+      render_previous_step_with_error(:iterations, 'Please choose an iteration.')
     end
 
     @iteration = @project.iterations.all(offset: params[:iteration].to_i-1, limit: 1).first
@@ -51,30 +49,35 @@ class CardOMatic < Sinatra::Base
   end
 
   def setup_project
-    unless params[:project_id]
-      @error = 'Please choose a project to print cards for.'
-      @projects = PivotalTracker::Project.all
-
-      halt(400, erb(:projects))
+    begin
+      @project = PivotalTracker::Project.find(params[:project_id].to_i)
+      raise InvalidProjectId unless @project
+    rescue RestClient::ResourceNotFound
+      raise InvalidProjectId
     end
-
-    @project = PivotalTracker::Project.find(params[:project_id].to_i)
-
-  rescue RestClient::ResourceNotFound
-    @error = 'Please choose a project to print cards for.'
+  rescue InvalidProjectId
     @projects = PivotalTracker::Project.all
-
-    halt(400, erb(:projects))
+    render_previous_step_with_error(:projects, 'Please choose a project to print cards for.')
   end
 
   def setup_api_key
     @api_key = params[:api_key]
 
     if @api_key.nil? || @api_key.empty?
-      @error = 'Please enter an API key.'
-      halt(400, erb(:start))
+      render_previous_step_with_error(:start, 'Please enter an API key')
     end
 
     PivotalTracker::Client.token = @api_key
   end
+
+  def fetch_iterations(project)
+    project.iterations.all(offset: project.current_iteration_number-2).reverse
+  end
+
+  def render_previous_step_with_error(view, error)
+    @error = error
+    halt(400, erb(view))
+  end
+
+  class InvalidProjectId < StandardError; end
 end
