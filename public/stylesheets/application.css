@@ -1,0 +1,95 @@
+@import url(http://fonts.googleapis.com/css?family=Lobster);
+
+body {
+  background: #f6f6f6;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 100%;
+}
+
+header {
+  text-align: center;
+}
+
+header h1 {
+  font-family: 'Lobster', Helvetica, Arial, sans-serif;
+  font-weight: normal;
+  font-size: 4em;
+}
+
+#main {
+  margin: 0 auto;
+  padding: 1em;
+  background: #fff;
+  border: 1px solid #bbb;
+  width: 600px;
+}
+#main h2 {
+  margin-top: 0.5em;
+}
+
+.error {
+  background: #b20300;
+  color: #fff;
+  padding: 0.5em;
+  text-shadow: #6a0a0b 0px 1px 1px;
+}
+
+p { margin: 0.6em 0; }
+
+form ul {
+  padding-left: 0;
+}
+form li {
+  list-style: none;
+  font-size: 0.9em;
+  border-bottom: 1px solid #ddd;
+}
+form li label {
+  background: #eee;
+  padding: 1em 0.5em;
+  display: block;
+}
+form li .iteration, form li input {
+  display: inline-block;
+  vertical-align: top;
+}
+form li .iteration span {
+  display: block;
+  color: #888;
+  padding: 0.3em 0 0;
+  font-size: 0.9em;
+}
+
+form input[type='text'] {
+  width: 100%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  padding: 0.3em;
+}
+
+button {
+  background: #333;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  color: #fff;
+  border: none;
+  font-size: 1em;
+  padding: 0.5em 0.7em;
+  margin: 0 auto;
+  display: block;
+}
+button:hover {
+  background: #555;
+}
+button span {
+  display: block;
+  font-size: 0.7em;
+  padding-top: 0.2em;
+}
+
+a, a:link, a:visited { color: #22628f; }
+a:hover, a:active { color: #102f46; }
+
+.start-again { border-top: 1px solid #ddd; padding: 1em 0 0; margin-top: 2em; font-size: 0.8em; }

@@ -1,0 +1,26 @@
+<h2><%= @project.name %></h2>
+
+<p>Select the iteration:</p>
+
+<form action="/render" method="post" target="_blank">
+  <ul>
+    <% @iterations.each do |iteration| %>
+      <li>
+        <label for="iteration_<%= iteration.number %>">
+          <input type="radio" id="iteration_<%= iteration.number %>" name="iteration" value="<%= iteration.number %>" />
+          <div class="iteration">
+            Iteration <%= iteration.number %>
+            <span class="date"><%= iteration.start.strftime("%d %b %Y") %> &rarr; <%= iteration.finish.strftime("%d %b %Y") %></span>
+          </div>
+        </label>
+      </li>
+    <% end %>
+  </ul>
+  <p>
+    <button type="submit">Build cards for this iteration <span>(opens in a new window)</span></button>
+    <input type="hidden" name="project_id" value="<%= @project.id %>" />
+    <input type="hidden" name="api_key" value="<%= @api_key %>" />
+  </p>
+</form>
+
+<p class="start-again"><a href="/">start again</a></p>

@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+  <link href="/stylesheets/application.css" type="text/css" rel="stylesheet" media="all" />
+  <title>Card-o-matic</title>
+</head>
+<body>
+  <header>
+    <h1>Card-o-matic</h1>
+  </header>
+
+  <div id="main">
+    <% if @error %>
+      <div class="error"><%= @error %></div>
+    <% end %>
+
+    <%= yield %>
+  </div>
+</body>
+</html>
