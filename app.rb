@@ -41,9 +41,12 @@ class CardOMatic < Sinatra::Base
       render_previous_step_with_error(:iterations, 'Please choose an iteration.')
     end
 
-    @iteration = @project.iterations.all(offset: params[:iteration].to_i-1, limit: 1).first
-
-    @stories = @iteration.stories
+    @stories = case params[:iteration]
+    when 'icebox'
+      @project.stories.all(state: "unscheduled")
+    when /\d+/
+      @project.iterations.all(offset: params[:iteration].to_i-1, limit: 1).first.stories
+    end
 
     erb :cards, :layout => false
   end
