@@ -32,6 +32,7 @@ header h1 {
   color: #fff;
   padding: 0.5em;
   text-shadow: #6a0a0b 0px 1px 1px;
+  margin-bottom: 1em;
 }
 
 p { margin: 0.6em 0; }
