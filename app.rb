@@ -44,6 +44,8 @@ class CardOMatic < Sinatra::Base
     @stories = case params[:iteration]
     when 'icebox'
       @project.stories.all(state: "unscheduled")
+    when 'backlog'
+      PivotalTracker::Iteration.backlog(@project).first.stories
     when /\d+/
       @project.iterations.all(offset: params[:iteration].to_i-1, limit: 1).first.stories
     end

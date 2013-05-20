@@ -13,6 +13,18 @@
         </div>
       </label>
     </li>
+    <li>
+      <label for="iteration_backlog">
+        <input type="radio" id="iteration_backlog" name="iteration" value="backlog" />
+        <div class="iteration">
+          Backlog
+          <span class="date">All stories currently in the backlog</span>
+        </div>
+      </label>
+    </li>
+  </ul>
+
+  <ul>
     <% @iterations.each do |iteration| %>
       <li>
         <label for="iteration_<%= iteration.number %>">
