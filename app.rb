@@ -1,6 +1,6 @@
 require 'sinatra/base'
 require 'pivotal_tracker'
-require 'active_support/core_ext/array'
+require 'active_support/all'
 
 PivotalTracker::Client.use_ssl = true
 
@@ -76,7 +76,8 @@ class CardOMatic < Sinatra::Base
   end
 
   def fetch_iterations(project)
-    project.iterations.all(offset: project.current_iteration_number-2).reverse
+    start = project.current_iteration_number < 5 ? 1 : project.current_iteration_number-4
+    (start..project.current_iteration_number)
   end
 
   def render_previous_step_with_error(view, error)

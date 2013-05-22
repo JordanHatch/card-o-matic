@@ -25,13 +25,12 @@
   </ul>
 
   <ul>
-    <% @iterations.each do |iteration| %>
+    <% @iterations.reverse_each do |iteration_number| %>
       <li>
-        <label for="iteration_<%= iteration.number %>">
-          <input type="radio" id="iteration_<%= iteration.number %>" name="iteration" value="<%= iteration.number %>" />
+        <label for="iteration_<%= iteration_number %>">
+          <input type="radio" id="iteration_<%= iteration_number %>" name="iteration" value="<%= iteration_number %>" />
           <div class="iteration">
-            Iteration <%= iteration.number %>
-            <span class="date"><%= iteration.start.strftime("%d %b %Y") %> &rarr; <%= iteration.finish.strftime("%d %b %Y") %></span>
+            Iteration <%= iteration_number %>
           </div>
         </label>
       </li>
