@@ -1,10 +1,15 @@
 require 'sinatra/base'
 require 'pivotal_tracker'
 require 'active_support/all'
+require 'rack/ssl-enforcer'
 
 PivotalTracker::Client.use_ssl = true
 
 class CardOMatic < Sinatra::Base
+  configure :production do
+    use Rack::SslEnforcer
+  end
+
   get '/' do
     @intro = true
 
