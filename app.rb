@@ -52,7 +52,12 @@ class CardOMatic < Sinatra::Base
     when 'backlog'
       PivotalTracker::Iteration.backlog(@project).first.stories
     when /\d+/
-      @project.iterations.all(offset: params[:iteration].to_i-1, limit: 1).first.stories
+      iteration = params[:iteration].to_i
+
+      options = { limit: 1 }
+      options.merge!(offset: iteration-1) if iteration > 1
+
+      @project.iterations.all(options).first.stories
     end
 
     erb :cards, :layout => false
