@@ -61,7 +61,11 @@ class CardOMatic < Sinatra::Base
       @project.iterations.all(options).first.stories
     end
 
-    erb :cards, :layout => false
+    if @stories.any?
+      erb :cards, :layout => false
+    else
+      erb :no_cards
+    end
   end
 
   def setup_project

@@ -1,0 +1,7 @@
+<h2>Error</h2>
+
+<% if params[:iteration] =~ /\d+/ %>
+  <p>There's no stories to print from iteration <%= params[:iteration] %> of <strong><%= @project.name %></strong>.</p>
+<% else %>
+  <p>There's no stories to print in the <%= params[:iteration] %> of <strong><%= @project.name %></strong>.</p>
+<% end %>
