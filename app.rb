@@ -1,3 +1,4 @@
+require 'airbrake'
 require 'sinatra/base'
 require 'pivotal_tracker'
 require 'active_support/all'
@@ -8,6 +9,19 @@ PivotalTracker::Client.use_ssl = true
 class CardOMatic < Sinatra::Base
   configure :production do
     use Rack::SslEnforcer
+
+    if ENV["USE_AIRBRAKE"]
+      Airbrake.configure do |config|
+        config.api_key = ENV["AIRBRAKE_API_KEY"]
+        config.host    = ENV["AIRBRAKE_HOST"]
+        config.port    = 443
+        config.secure  = true
+        config.params_filters << "api_key"
+      end
+
+      use Airbrake::Rack
+      enable :raise_errors
+    end
   end
 
   get '/' do

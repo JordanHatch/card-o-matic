@@ -9,3 +9,5 @@ gem 'pivotal-tracker', :git => 'git://github.com/amair/pivotal-tracker.git', :re
 gem 'activesupport'
 
 gem 'unicorn'
+
+gem 'airbrake'
