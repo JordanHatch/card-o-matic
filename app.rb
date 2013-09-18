@@ -50,7 +50,8 @@ class CardOMatic < Sinatra::Base
     when 'icebox'
       @project.stories.all(state: "unscheduled")
     when 'backlog'
-      PivotalTracker::Iteration.backlog(@project).first.stories
+      backlog = PivotalTracker::Iteration.backlog(@project)
+      backlog.select {|i| i.is_a?(PivotalTracker::Iteration) }.map(&:stories).flatten
     when /\d+/
       iteration = params[:iteration].to_i
 
