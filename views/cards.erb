@@ -26,6 +26,9 @@
             </div>
             <div class="footer">
               <span class="epic_name"></span>
+              <% if story.owned_by %>
+                <span class="owner"><%= story.owned_by.to_s.split(/[\.\- ]/).map{|s|s[0]}.join('') %></span>
+              <% end %>
               <% if story.estimate and story.estimate > 0 %>
                 <span class="points points<%= story.estimate %>"><span><%= story.estimate %></span></span>
               <% end %>
