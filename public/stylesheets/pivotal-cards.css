@@ -143,14 +143,16 @@
 }
 
 .epic_name {
-  float: left;
+  display: block;
+  width: 100%;
+  text-align: center;
   text-transform: uppercase;
 }
 
 .points {
-  float: right;
-  position: relative;
+  position: absolute;
   top: -4.5mm;
+  right: 0;
   font-size: 9mm;
   font-weight: bold;
 }
@@ -198,6 +200,18 @@
   font-weight: bold;
 }
 
+.fronts .owner {
+  position: absolute;
+  top: -4.5mm;
+  float: none;
+  font-size: 9mm;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.fronts .owner:before {
+  content: none;
+}
 
 /*
  *  cards for story-type
