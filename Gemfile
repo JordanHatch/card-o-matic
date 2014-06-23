@@ -5,9 +5,10 @@ gem 'rest-client'
 
 gem 'rack-ssl-enforcer'
 
-gem 'pivotal-tracker', :git => 'git://github.com/amair/pivotal-tracker.git', :ref => '1897bd5986da96cd228c90097bba4415d70c3159'
-gem 'activesupport'
+gem 'tracker_api', :git => 'git://github.com/amfleming/tracker_api.git', :ref => '00740d73c42faffbb6bc2b747527028b6d3de024'
 
 gem 'unicorn'
 
 gem 'airbrake'
+
+gem 'redcarpet'

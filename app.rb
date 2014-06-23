@@ -1,10 +1,12 @@
 require 'airbrake'
 require 'sinatra/base'
-require 'pivotal_tracker'
-require 'active_support/all'
+require 'tracker_api'
 require 'rack/ssl-enforcer'
+require 'redcarpet'
 
-PivotalTracker::Client.use_ssl = true
+renderer = Redcarpet::Render::HTML.new(hard_wrap: true)
+markdown = Redcarpet::Markdown.new(renderer)
+
 
 class CardOMatic < Sinatra::Base
   configure :production do
@@ -31,11 +33,11 @@ class CardOMatic < Sinatra::Base
   end
 
   post '/projects' do
-    setup_api_key
+    client = setup_api_key
 
     begin
-      @projects = PivotalTracker::Project.all
-    rescue RestClient::Unauthorized
+      @projects = client.projects
+    rescue TrackerApi::Error => e
       render_previous_step_with_error(:start, "We couldn't connect with your API key.")
     end
 
@@ -43,8 +45,8 @@ class CardOMatic < Sinatra::Base
   end
 
   post '/iterations' do
-    setup_api_key
-    setup_project
+    client = setup_api_key
+    setup_project(client)
 
     @iterations = fetch_iterations(@project)
 
@@ -52,8 +54,8 @@ class CardOMatic < Sinatra::Base
   end
 
   post '/render' do
-    setup_api_key
-    setup_project
+    client = setup_api_key
+    setup_project(client)
 
     if params[:iteration].nil? || params[:iteration].empty?
       @iterations = fetch_iterations(@project)
@@ -62,17 +64,15 @@ class CardOMatic < Sinatra::Base
 
     @stories = case params[:iteration]
     when 'icebox'
-      @project.stories.all(state: "unscheduled")
+      @project.stories(with_state: "unscheduled", fields: ':default,owners')
     when 'backlog'
-      backlog = PivotalTracker::Iteration.backlog(@project)
-      backlog.select {|i| i.is_a?(PivotalTracker::Iteration) }.map(&:stories).flatten
+      @project.iterations(scope: 'backlog', fields: ':default,stories(:default,owners)').first.stories
     when /\d+/
       iteration = params[:iteration].to_i
-
       options = { limit: 1 }
+      options.merge!(fields: ':default,stories(:default,owners)')
       options.merge!(offset: iteration-1) if iteration > 1
-
-      @project.iterations.all(options).first.stories
+      @project.iterations(options).first.stories
     end
 
     if @stories.any?
@@ -82,15 +82,15 @@ class CardOMatic < Sinatra::Base
     end
   end
 
-  def setup_project
+  def setup_project(client)
     begin
-      @project = PivotalTracker::Project.find(params[:project_id].to_i)
+      @project = client.project(params[:project_id].to_i)
       raise InvalidProjectId unless @project
-    rescue RestClient::ResourceNotFound
+    rescue TrackerApi::Error
       raise InvalidProjectId
     end
   rescue InvalidProjectId
-    @projects = PivotalTracker::Project.all
+    @projects = client.projects
     render_previous_step_with_error(:projects, 'Please choose a project to print cards for.')
   end
 
@@ -101,11 +101,11 @@ class CardOMatic < Sinatra::Base
       render_previous_step_with_error(:start, 'Please enter an API key')
     end
 
-    PivotalTracker::Client.token = @api_key
+    TrackerApi::Client.new(token: @api_key)
   end
 
   def fetch_iterations(project)
-    start = project.current_iteration_number < 5 ? 1 : project.current_iteration_number-4
+    start = [1, project.current_iteration_number-4].max
     (start..project.current_iteration_number)
   end
 
