@@ -5,19 +5,18 @@
 </head>
 <body>
   <div id="pivotal-cards-pages" class="rubber-stamp double-sided">
-    <% @stories.in_groups_of(4) do |page| %>
+    <% @stories.each_slice(4) do |page| %>
       <div class="page fronts">
       <% page.each_with_index do |story, i| %>
         <% next if story.nil? %>
         <div class="<%= story.story_type %> card" id="front-<%= i %>">
           <div class="front side">
             <div class="header">
-              <% if story.labels %>
-                <span class="labels">
-                  <% story.labels.split(',').each do |label| %>
-                    <span class="label"><%= label %></span>
-                  <% end %>
-                 <span>
+              <% if story.owners.any? %>
+                <span class="owner"><%= story.owners.map{|o|o.initials}.join(" ") %></span>
+              <% end %>
+              <% if story.estimate and story.estimate > 0 %>
+                <span class="points points<%= story.estimate.to_i %>"><span><%= story.estimate.to_i %> pts</span></span>
               <% end %>
             </div>
             <div class="middle">
@@ -26,11 +25,12 @@
             </div>
             <div class="footer">
               <span class="epic_name"></span>
-              <% if story.owned_by %>
-                <span class="owner"><%= story.owned_by.to_s.split(/[\.\- ]/).map{|s|s[0]}.join('') %></span>
-              <% end %>
-              <% if story.estimate and story.estimate > 0 %>
-                <span class="points points<%= story.estimate %>"><span><%= story.estimate %></span></span>
+              <% if story.labels.any? %>
+                <span class="labels">
+                  <% story.labels.each do |label| %>
+                    <span class="label"><%= label.name %></span>
+                  <% end %>
+                 <span>
               <% end %>
             </div>
           </div>
@@ -44,16 +44,15 @@
         <div class="<%= story.story_type %> card rubber-stamp double-sided" id="back-<%= i %>">
           <div class="back side">
             <div class="header">
-              <span class="project"><%= @project.name %></span>
-              <span class="id"><%= story.id %></span>
+              <span class="project"><%= story.name %></span>
             </div>
             <div class="middle">
-              <div class="story-title"><%= story.name %></div>
-              <div class="description"><%= story.description %></div>
+              <% if story.description %>
+                <div class="description"><%= markdown(story.description.gsub("\n", "\n\n")) %></div>
+              <% end %>
             </div>
             <div class="footer">
-              <% if story.requested_by %><span class="requester"><%= story.requested_by %></span><% end %>
-              <% if story.owned_by %><span class="owner"><%= story.owned_by %></span><% end %>
+              <span class="id"><%= story.id %></span>
             </div>
           </div>
         </div>
