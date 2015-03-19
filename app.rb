@@ -75,6 +75,8 @@ class CardOMatic < Sinatra::Base
       @project.iterations(options).first.stories
     end
 
+    @with_qr_codes = params[:with_qr_codes] == 'true'
+
     if @stories.any?
       erb :cards, :layout => false
     else

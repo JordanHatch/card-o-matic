@@ -36,6 +36,18 @@
       </li>
     <% end %>
   </ul>
+
+  <p>Would you like QR codes on the cards?</p>
+
+  <ul>
+    <li>
+      <label>
+        <input type="checkbox" id="with_qr_codes" name="with_qr_codes" value="true">
+        Include QR codes linking to the story
+      </label>
+    </li>
+  </ul>
+
   <p>
     <button type="submit">Generate these cards <span>(opens in a new window)</span></button>
     <input type="hidden" name="project_id" value="<%= @project.id %>" />
