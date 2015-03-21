@@ -319,3 +319,17 @@
 .white-backs .backs .card .side .footer {
   background-color: #ffffff;
 }
+
+.qr-code {
+  width: 20mm;
+  height: inherit;
+  display: inline-block;
+  position: relative;
+}
+
+.qr-image {
+  position: absolute;
+  width: 20mm;
+  bottom: 0;
+  left: 0;
+}
