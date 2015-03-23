@@ -67,6 +67,23 @@ class CardOMatic < Sinatra::Base
       @project.stories(with_state: "unscheduled", fields: ':default,owners')
     when 'backlog'
       @project.iterations(scope: 'backlog', fields: ':default,stories(:default,owners)').first.stories
+    when 'epics'
+      epics = @project.epics
+      epics.each do |epic|
+        epic.define_singleton_method(:story_type) do
+          "epic"
+        end
+        epic.define_singleton_method(:labels) do
+          []
+        end
+        epic.define_singleton_method(:owners) do
+          []
+        end
+        epic.define_singleton_method(:estimate) do
+          false
+        end
+      end
+      epics
     when /\d+/
       iteration = params[:iteration].to_i
       options = { limit: 1 }
