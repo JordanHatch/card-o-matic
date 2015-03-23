@@ -62,12 +62,15 @@ class CardOMatic < Sinatra::Base
       render_previous_step_with_error(:iterations, 'Please choose an iteration.')
     end
 
+    @story_link = "http://zxing.org/w/chart?cht=qr&chs=120x120&chld=L&choe=UTF-8&chl=https%3A%2F%2Fwww.pivotaltracker.com%2Fstory%2Fshow%2F"
+
     @stories = case params[:iteration]
     when 'icebox'
       @project.stories(with_state: "unscheduled", fields: ':default,owners')
     when 'backlog'
       @project.iterations(scope: 'backlog', fields: ':default,stories(:default,owners)').first.stories
     when 'epics'
+      @story_link = "http://zxing.org/w/chart?cht=qr&chs=120x120&chld=L&choe=UTF-8&chl=https%3A%2F%2Fwww.pivotaltracker.com%2Fepic%2Fshow%2F"
       epics = @project.epics
       epics.each do |epic|
         epic.define_singleton_method(:story_type) do
