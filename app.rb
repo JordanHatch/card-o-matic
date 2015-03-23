@@ -67,6 +67,11 @@ class CardOMatic < Sinatra::Base
       @project.stories(with_state: "unscheduled", fields: ':default,owners')
     when 'backlog'
       @project.iterations(scope: 'backlog', fields: ':default,stories(:default,owners)').first.stories
+    when 'specific_stories'
+      story_ids = params[:story_ids].split(',')
+      story_ids.map do |story_id|
+        @project.story(story_id.to_i)
+      end
     when /\d+/
       iteration = params[:iteration].to_i
       options = { limit: 1 }
