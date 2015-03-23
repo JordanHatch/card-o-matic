@@ -26,7 +26,7 @@
             <div class="footer">
               <% if @with_qr_codes %>
                 <span class="qr-code">
-                  <img src="http://zxing.org/w/chart?cht=qr&chs=120x120&chld=L&choe=UTF-8&chl=https%3A%2F%2Fwww.pivotaltracker.com%2Fstory%2Fshow%2F<%= story.id %>" alt="Link to pivotal story" class="qr-image"/>
+                  <img src="<%= @story_link %><%= story.id %>" alt="Link to pivotal story" class="qr-image"/>
                 </span>
               <% end %>
               <% if story.labels.any? %>
