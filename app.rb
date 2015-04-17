@@ -91,6 +91,9 @@ class CardOMatic < Sinatra::Base
       story_ids.map do |story_id|
         @project.story(story_id.to_i)
       end
+    when 'stories_since'
+      date = params[:date_since]
+      @project.stories(filter: "updated_since:\"#{date}\"")
     when /\d+/
       iteration = params[:iteration].to_i
       options = { limit: 1 }
