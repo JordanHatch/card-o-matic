@@ -70,7 +70,6 @@ class CardOMatic < Sinatra::Base
     when 'backlog'
       @project.iterations(scope: 'backlog', fields: ':default,stories(:default,owners)').first.stories
     when 'epics'
-      @story_link = "http://zxing.org/w/chart?cht=qr&chs=120x120&chld=L&choe=UTF-8&chl=https%3A%2F%2Fwww.pivotaltracker.com%2Fepic%2Fshow%2F"
       epics = @project.epics
       epics.each do |epic|
         epic.define_singleton_method(:story_type) do
@@ -87,6 +86,11 @@ class CardOMatic < Sinatra::Base
         end
       end
       epics
+    when 'specific_stories'
+      story_ids = params[:story_ids].split(',')
+      story_ids.map do |story_id|
+        @project.story(story_id.to_i)
+      end
     when /\d+/
       iteration = params[:iteration].to_i
       options = { limit: 1 }
