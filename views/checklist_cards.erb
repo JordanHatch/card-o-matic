@@ -11,31 +11,35 @@
         <% next if story.nil? %>
         <div class="<%= story.story_type %> card" id="front-<%= i %>">
           <div class="front side">
-            <div class="header">
-              <% if story.owners.any? %>
-                <span class="owner"><%= story.owners.map{|o|o.initials}.join(" ") %></span>
+            <div>
+              <% if story.labels.any? %>
+                <% story.labels.each do |label| %>
+                  <span class="label"><%= label.name %></span>
+                <% end %>
               <% end %>
               <% if story.estimate and story.estimate > 0 %>
                 <span class="points points<%= story.estimate.to_i %>"><span><%= story.estimate.to_i %> pts</span></span>
               <% end %>
             </div>
-            <div class="middle">
+            <div >
               <div class="story-title"><%= story.name %></div>
               <div class="story-type"><%= story.story_type %></div>
             </div>
             <div class="footer">
-              <% if @with_qr_codes %>
-                <span class="qr-code">
-                  <img src="<%= @story_link %><%= story.id %>" alt="Link to pivotal story" class="qr-image"/>
-                </span>
-              <% end %>
-              <% if story.labels.any? %>
-                <span class="labels">
-                  <% story.labels.each do |label| %>
-                    <span class="label"><%= label.name %></span>
-                  <% end %>
-                 <span>
-              <% end %>
+              <table class="checklist">
+                <tr>
+                  <td>Dev Analysis</td>
+                  <td>Unit Test</td>
+                  <td>Development</td>
+                  <td>Dev Peer Review</td>
+                </tr>
+                <tr>
+                  <td>Test Scenario</td>
+                  <td>Test Automation</td>
+                  <td>Test Peer Review</td>
+                  <td>On Int</td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>

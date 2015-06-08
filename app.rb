@@ -62,11 +62,38 @@ class CardOMatic < Sinatra::Base
       render_previous_step_with_error(:iterations, 'Please choose an iteration.')
     end
 
+    @story_link = "http://zxing.org/w/chart?cht=qr&chs=120x120&chld=L&choe=UTF-8&chl=https%3A%2F%2Fwww.pivotaltracker.com%2Fstory%2Fshow%2F"
+
     @stories = case params[:iteration]
     when 'icebox'
       @project.stories(with_state: "unscheduled", fields: ':default,owners')
     when 'backlog'
       @project.iterations(scope: 'backlog', fields: ':default,stories(:default,owners)').first.stories
+    when 'epics'
+      epics = @project.epics
+      epics.each do |epic|
+        epic.define_singleton_method(:story_type) do
+          "epic"
+        end
+        epic.define_singleton_method(:labels) do
+          []
+        end
+        epic.define_singleton_method(:owners) do
+          []
+        end
+        epic.define_singleton_method(:estimate) do
+          false
+        end
+      end
+      epics
+    when 'specific_stories'
+      story_ids = params[:story_ids].split(',')
+      story_ids.map do |story_id|
+        @project.story(story_id.to_i)
+      end
+    when 'stories_since'
+      date = params[:date_since]
+      @project.stories(filter: "updated_since:\"#{date}\"")
     when /\d+/
       iteration = params[:iteration].to_i
       options = { limit: 1 }
@@ -78,7 +105,11 @@ class CardOMatic < Sinatra::Base
     @with_qr_codes = params[:with_qr_codes] == 'true'
 
     if @stories.any?
-      erb :cards, :layout => false
+      if params[:with_checklist_layout] == 'true'
+        erb :checklist_cards, :layout => false
+      else
+        erb :cards, :layout => false
+      end
     else
       erb :no_cards
     end

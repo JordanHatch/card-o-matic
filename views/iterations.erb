@@ -22,6 +22,36 @@
         </div>
       </label>
     </li>
+    <li>
+      <label for="iteration_epics">
+        <input type="radio" id="iteration_epics" name="iteration" value="epics" />
+        <div class="iteration">
+          Epics
+          <span class="date">All your Epics</span>
+        </div>
+      </label>
+    </li>
+    <li>
+      <label for="iteration_specfic">
+        <input type="radio" id="iteration_specific" name="iteration" value="specific_stories" />
+        <div class="iteration">
+          Specific Stories
+          <label for="iteration_specific_ids">
+            Comma-separated list of Story IDs
+            <input type="text" id="iteration_specific_ids" name="story_ids" />
+          </label>
+        </div>
+      </label>
+    </li>
+    <li>
+      <label for="iteration_since">
+        <input type="radio" id="iteration_since" name="iteration" value="stories_since" />
+        <div class="iteration">
+          Stories updated since
+          <input type="date" id="iteration_since_date" name="date_since" />
+        </div>
+      </label>
+    </li>
   </ul>
 
   <ul>
@@ -44,6 +74,17 @@
       <label>
         <input type="checkbox" id="with_qr_codes" name="with_qr_codes" value="true">
         Include QR codes linking to the story
+      </label>
+    </li>
+  </ul>
+
+  <p>Would you like to use the checklist layout?</p>
+
+  <ul>
+    <li>
+      <label>
+        <input type="checkbox" id="with_qr_codes" name="with_checklist_layout" value="true">
+        Use the checklist layout instead of the standard layout
       </label>
     </li>
   </ul>
