@@ -105,7 +105,11 @@ class CardOMatic < Sinatra::Base
     @with_qr_codes = params[:with_qr_codes] == 'true'
 
     if @stories.any?
-      erb :cards, :layout => false
+      if params[:with_checklist_layout] == 'true'
+        erb :checklist_cards, :layout => false
+      else
+        erb :cards, :layout => false
+      end
     else
       erb :no_cards
     end

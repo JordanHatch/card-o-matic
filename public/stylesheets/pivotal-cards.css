@@ -126,7 +126,7 @@
 
 .footer {
   color: #333;
-  height: 7.5mm;
+  min-height: 7.5mm;
   width: 115mm;
   position: absolute;
   bottom: 0;
@@ -332,4 +332,9 @@
   width: 20mm;
   bottom: 0;
   left: 0;
+}
+
+.checklist td, .checklist tr {
+  border: 1px solid black;
+  padding: 5px;
 }

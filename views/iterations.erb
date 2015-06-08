@@ -78,6 +78,17 @@
     </li>
   </ul>
 
+  <p>Would you like to use the checklist layout?</p>
+
+  <ul>
+    <li>
+      <label>
+        <input type="checkbox" id="with_qr_codes" name="with_checklist_layout" value="true">
+        Use the checklist layout instead of the standard layout
+      </label>
+    </li>
+  </ul>
+
   <p>
     <button type="submit">Generate these cards <span>(opens in a new window)</span></button>
     <input type="hidden" name="project_id" value="<%= @project.id %>" />

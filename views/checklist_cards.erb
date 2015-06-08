@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+  <link href="/stylesheets/pivotal-cards.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+<body>
+  <div id="pivotal-cards-pages" class="rubber-stamp double-sided">
+    <% @stories.each_slice(4) do |page| %>
+      <div class="page fronts">
+      <% page.each_with_index do |story, i| %>
+        <% next if story.nil? %>
+        <div class="<%= story.story_type %> card" id="front-<%= i %>">
+          <div class="front side">
+            <div>
+              <% if story.labels.any? %>
+                <% story.labels.each do |label| %>
+                  <span class="label"><%= label.name %></span>
+                <% end %>
+              <% end %>
+              <% if story.estimate and story.estimate > 0 %>
+                <span class="points points<%= story.estimate.to_i %>"><span><%= story.estimate.to_i %> pts</span></span>
+              <% end %>
+            </div>
+            <div >
+              <div class="story-title"><%= story.name %></div>
+              <div class="story-type"><%= story.story_type %></div>
+            </div>
+            <div class="footer">
+              <table class="checklist">
+                <tr>
+                  <td>Dev Analysis</td>
+                  <td>Unit Test</td>
+                  <td>Development</td>
+                  <td>Dev Peer Review</td>
+                </tr>
+                <tr>
+                  <td>Test Scenario</td>
+                  <td>Test Automation</td>
+                  <td>Test Peer Review</td>
+                  <td>On Int</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      </div>
+
+      <div class="page backs">
+      <% page.each_with_index do |story, i| %>
+        <% next if story.nil? %>
+        <div class="<%= story.story_type %> card rubber-stamp double-sided" id="back-<%= i %>">
+          <div class="back side">
+            <div class="header">
+              <span class="project"><%= story.name %></span>
+            </div>
+            <div class="middle">
+              <% if story.description %>
+                <div class="description"><%= markdown(story.description.gsub("\n", "\n\n")) %></div>
+              <% end %>
+            </div>
+            <div class="footer">
+              <span class="id"><%= story.id %></span>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      </div>
+    <% end %>
+  </div>
+</body>
+</html>
